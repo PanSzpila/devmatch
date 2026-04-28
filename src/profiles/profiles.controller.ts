@@ -1,5 +1,17 @@
-import { Controller, Get, Query, Param, Body, Post } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Query,
+  Param,
+  Body,
+  Post,
+  Put,
+  Delete,
+  HttpCode,
+  HttpStatus,
+} from '@nestjs/common';
 import { CreateProfileDto } from './dto/create-profile.dto';
+import { UpdateProfileDto } from './dto/update.profile.dto';
 
 @Controller('profiles')
 export class ProfilesController {
@@ -24,6 +36,21 @@ export class ProfilesController {
       description: createProfileDto.description,
     };
   }
+
   // PUT /profiles/:id
+  @Put()
+  update(
+    @Param('id') id: string,
+    @Body() updateProfileDtoateProfileDto: UpdateProfileDto,
+  ) {
+    return {
+      id,
+      ...updateProfileDtoateProfileDto,
+    };
+  }
+
   // DELETE /profiles/:id
+  @Delete(':id')
+  @HttpCode(HttpStatus.OK) //domyślna zwrotka po delete to 204 - no content, a my tu chcemy 200 - ok
+  remove(@Param('id') id: string) {}
 }
