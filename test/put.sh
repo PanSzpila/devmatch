@@ -1,7 +1,7 @@
 #!/bin/bash
-curl -X PUT http://127.0.0.1:3000/profiles/123 \
+curl -X PUT http://localhost:3000/profiles/7988a7ba-6f4d-4ab0-abde-fcee311b2486 \
   -H "Content-Type: application/json" \
   -d '{
-    "name": "Jane Smith",
-    "description": "Backend Developer updated profile",
+    "name": "Changed Profile",
+    "description": "Backend Developer updated profile"
   }'
