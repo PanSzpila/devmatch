@@ -9,10 +9,13 @@ import {
   Delete,
   HttpCode,
   HttpStatus,
+  ParseUUIDPipe,
+  ValidationPipe,
 } from '@nestjs/common';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { ProfilesService } from './profiles.service';
+import type { UUID } from 'crypto';
 
 @Controller('profiles')
 export class ProfilesController {
@@ -26,25 +29,28 @@ export class ProfilesController {
 
   //GET /profiles/:id
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseUUIDPipe) id: UUID) {
     return this.profilesService.findOne(id);
   }
 
   //POST /profiles
   @Post()
-  create(@Body() createProfileDto: CreateProfileDto) {
+  create(@Body(new ValidationPipe()) createProfileDto: CreateProfileDto) {
     return this.profilesService.create(createProfileDto);
   }
 
   // PUT /profiles/:id
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateProfileDto: UpdateProfileDto) {
+  update(
+    @Param('id', ParseUUIDPipe) id: UUID,
+    @Body(new ValidationPipe()) updateProfileDto: UpdateProfileDto,
+  ) {
     return this.profilesService.update(id, updateProfileDto);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ParseUUIDPipe) id: UUID) {
     return this.profilesService.remove(id);
   }
 }
